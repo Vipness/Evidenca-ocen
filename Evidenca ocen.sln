@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evidenca ocen", "Evidenca ocen\Evidenca ocen.csproj", "{6C4F9C35-9736-4AF5-BB06-32E8B8AE41B1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C4F9C35-9736-4AF5-BB06-32E8B8AE41B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C4F9C35-9736-4AF5-BB06-32E8B8AE41B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C4F9C35-9736-4AF5-BB06-32E8B8AE41B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C4F9C35-9736-4AF5-BB06-32E8B8AE41B1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38B66FCA-F751-4DE6-A347-7CCE6A958C1D}
+	EndGlobalSection
+EndGlobal
