@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿/*using System.Text;
 Console.OutputEncoding = Encoding.UTF8; // izpis nastavil na utf-8, da se vidijo tudi šumniki
 Console.Title = "Evidenca ocen"; // spremenim ime konzole
 
@@ -10,13 +10,22 @@ string[,] ocene = new string[1, st_pred + 1];
 ocene[0, 0] = "Ocene";
 
 // imena predmetov
-for (int i = 0; i < st_pred; i++)
-{
+for (int i = 0; i < st_pred; i++){
     Console.Write("Vnesi ime {0} predmeta: ", i + 1);
     ocene[0, i + 1] = Console.ReadLine();
 }
+*/
+string[] ne = { "ne", "n", "no" };
+string input = "ja";
 
-izpis(ocene);
+do
+{
+    
+
+    Console.Write("Ali želiš nadaljevati? ");
+    input = Console.ReadLine().ToLower();
+}
+while (!(ne.Contains(input)));
 
 static void izpis(string[,] t)
 {
