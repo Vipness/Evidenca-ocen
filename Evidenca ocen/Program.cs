@@ -83,6 +83,9 @@ static string[,] dodaj(string[,] ocene)
     Console.Write("Vnesi pridobljeno oceno: ");
     ocene[vrsta, stolp_predmeta] = Console.ReadLine();
 
+    for (int i = 1; i < ocene.GetLength(0); i++)
+        ocene[i, 0] = Convert.ToString(i);
+
     return ocene;
 }
 
