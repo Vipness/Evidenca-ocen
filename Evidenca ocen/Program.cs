@@ -24,15 +24,16 @@ do
 {
     ocene = izberi(ocene);
     izpis(ocene);
-    Console.WriteLine("\nAli želiš nadaljevati? (za zaustavitev vnesi 'ne', 'n' ali 'no') ");
+    Console.WriteLine("\nAli želiš nadaljevati? ('ne', 'n' ali 'no' za zaustavitev) ");
     input = Console.ReadLine().ToLower();
+    Console.Clear();
 }
 while (!(ne.Contains(input)));
 
 static string[,] izberi(string[,] ocene)
 {
     Console.ForegroundColor = ConsoleColor.Green;
-    Console.WriteLine("\nIzberi kaj želiš narediti:");
+    Console.WriteLine("Izberi kaj želiš narediti:");
     Console.ResetColor();
 
     Console.WriteLine("1 - Dodaj oceno \n2 - Uredi oceno \n3 - Izbriši predmet \n4 - Izpiši ocene za določen predmet");
@@ -42,8 +43,8 @@ static string[,] izberi(string[,] ocene)
     switch (st_izbire)
     {
         case 1: ocene = dodaj(ocene); break;
-        /*
         case 2: ocene = uredi(ocene); break;
+        /*
         case 3: ocene = izbriši(ocene); break;
         case 4: izpiši_za_predmet(ocene); break;
         */
@@ -95,6 +96,41 @@ static string[,] dodaj(string[,] ocene)
 
     for (int i = 1; i < ocene.GetLength(0); i++)
         ocene[i, 0] = Convert.ToString(i);
+
+    return ocene;
+}
+
+static string[,] uredi(string[,] ocene)
+{
+    if (ocene.GetLength(0) == 1) // če ima samo 1 vrstico nima ocen zato jih ne mores urejat
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("V tabeli ni zapisanih nobenih ocen, zato jih ne morete urejati.");
+        Console.ResetColor();
+        return ocene;
+    }
+
+    Console.Write("\nPri katerem predmetu si želiš urediti oceno? ");
+    string predmet = Console.ReadLine();
+
+    int stolp_predmeta = najdi_predmet(ocene, predmet);
+    if (stolp_predmeta == -1)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
+        Console.ResetColor();
+        uredi(ocene);
+    }
+
+    int vrsta = 1; // default vrsta je 1, če jih je več ga vpraša katera in spremeni vrednost
+    if(ocene.GetLength(0) > 2)
+    {
+        Console.Write("Katero oceno po vrsti si želiš si urediti? ");
+        vrsta = int.Parse(Console.ReadLine());
+    }
+
+    Console.Write("Vnesi novo oceno: ");
+    ocene[vrsta, stolp_predmeta] = Console.ReadLine();
 
     return ocene;
 }
