@@ -24,7 +24,7 @@ do
 {
     ocene = izberi(ocene);
     izpis(ocene);
-    Console.WriteLine("\nAli želiš nadaljevati? ('n', 'ne' ali 'no' za zaustavitev) ");
+    Console.Write("\nAli želiš nadaljevati? ('n', 'ne' ali 'no' za zaustavitev) ");
     input = Console.ReadLine().ToLower();
 }
 while (!(ne.Contains(input)));
@@ -38,15 +38,14 @@ static string[,] izberi(string[,] ocene)
 
     switch (st_izbire)
     {
+        // case 0: ocene = dodaj_predmet(ocene); break;
         case 1: ocene = dodaj(ocene); break;
         case 2: ocene = uredi(ocene); break;
-        /*
-        case 3: ocene = izbriši(ocene); break;
-        case 4: izpiši_za_predmet(ocene); break;
-        */
+        case 3: ocene = izbrisi(ocene); break;
+        //case 4: izpiši_za_predmet(ocene); break;
         default:
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nVnesena je bila napačna številka! Poskusi ponovno."); // izpiše z rdečo
+            Console.WriteLine("\nVnesena je bila napačna številka! Poskusi znova."); // izpiše z rdečo
             Console.ResetColor();
             ocene = izberi(ocene);
             break;
@@ -131,6 +130,35 @@ static string[,] uredi(string[,] ocene)
     ocene[vrsta, stolp_predmeta] = Console.ReadLine();
 
     return ocene;
+}
+
+static string[,] izbrisi(string[,] ocene)
+{
+    Console.Write("\nKateri predmet si želiš izbrisati? ");
+    string predmet = Console.ReadLine();
+
+    int stolp_predmeta = najdi_predmet(ocene, predmet);
+    if (stolp_predmeta == -1)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
+        Console.ResetColor();
+        izbrisi(ocene);
+    }
+
+    string[,] nova = new string[ocene.GetLength(0), ocene.GetLength(1) - 1];
+
+    for(int i = 0; i < ocene.GetLength(0); i++)
+        for(int j = 0; j < ocene.GetLength(1); j++)
+        {
+            if (j < stolp_predmeta)
+                nova[i, j] = ocene[i, j];
+
+            else if (j > stolp_predmeta)
+                nova[i, j - 1] = ocene[i, j];
+        }
+
+    return nova;
 }
 
 static string[,] povecaj(string[,] ocene)
