@@ -81,7 +81,17 @@ static string[,] dodaj(string[,] ocene)
     }
 
     Console.Write("Vnesi pridobljeno oceno: ");
-    ocene[vrsta, stolp_predmeta] = Console.ReadLine();
+    string ocena = Console.ReadLine();
+
+    while (int.Parse(ocena) < 0 || int.Parse(ocena) > 5)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("Vnešena ocena je neveljavna! Prosim vnesi ponovno: ");
+        Console.ResetColor();
+        ocena = Console.ReadLine();
+    }
+
+    ocene[vrsta, stolp_predmeta] = ocena;
 
     for (int i = 1; i < ocene.GetLength(0); i++)
         ocene[i, 0] = Convert.ToString(i);
