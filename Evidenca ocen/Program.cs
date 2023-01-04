@@ -51,7 +51,7 @@ static string[,] izberi(string[,] ocene)
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Vnesena je bila napačna številka! Poskusi ponovno."); // izpiše z rdečo
             Console.ResetColor();
-            izberi(ocene);
+            ocene = izberi(ocene);
             break;
     }
 
