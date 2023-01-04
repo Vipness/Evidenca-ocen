@@ -42,7 +42,7 @@ static string[,] izberi(string[,] ocene)
         case 1: ocene = dodaj(ocene); break;
         case 2: ocene = uredi(ocene); break;
         case 3: ocene = izbrisi(ocene); break;
-        //case 4: izpiši_za_predmet(ocene); break;
+        case 4: izpisi_predmet(ocene); break;
         default:
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nVnesena je bila napačna številka! Poskusi znova."); // izpiše z rdečo
@@ -159,6 +159,31 @@ static string[,] izbrisi(string[,] ocene)
         }
 
     return nova;
+}
+
+static void izpisi_predmet(string[,] ocene)
+{
+    Console.Write("\nZa kater predmet bi rad izpisal ocene? ");
+    string predmet = Console.ReadLine();
+
+    int stolp_predmeta = najdi_predmet(ocene, predmet);
+    if (stolp_predmeta == -1)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
+        Console.ResetColor();
+        izberi(ocene);
+    }
+
+    string[,] novo = new string[ocene.GetLength(0), 2];
+
+    for (int i = 0; i < ocene.GetLength(0); i++)
+    {
+        novo[i, 0] = ocene[i, 0];
+        novo[i, 1] = ocene[i, stolp_predmeta];
+    }
+
+    izpis(novo);                  
 }
 
 static string[,] povecaj(string[,] ocene)
