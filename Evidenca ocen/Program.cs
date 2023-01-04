@@ -24,18 +24,14 @@ do
 {
     ocene = izberi(ocene);
     izpis(ocene);
-    Console.WriteLine("\nAli želiš nadaljevati? ('ne', 'n' ali 'no' za zaustavitev) ");
+    Console.WriteLine("\nAli želiš nadaljevati? ('n', 'ne' ali 'no' za zaustavitev) ");
     input = Console.ReadLine().ToLower();
-    Console.Clear();
 }
 while (!(ne.Contains(input)));
 
 static string[,] izberi(string[,] ocene)
 {
-    Console.ForegroundColor = ConsoleColor.Green;
-    Console.WriteLine("Izberi kaj želiš narediti:");
-    Console.ResetColor();
-
+    Console.WriteLine("\nIzberi kaj želiš narediti:");
     Console.WriteLine("1 - Dodaj oceno \n2 - Uredi oceno \n3 - Izbriši predmet \n4 - Izpiši ocene za določen predmet");
 
     int st_izbire = int.Parse(Console.ReadLine());
@@ -50,7 +46,7 @@ static string[,] izberi(string[,] ocene)
         */
         default:
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Vnesena je bila napačna številka! Poskusi ponovno."); // izpiše z rdečo
+            Console.WriteLine("\nVnesena je bila napačna številka! Poskusi ponovno."); // izpiše z rdečo
             Console.ResetColor();
             ocene = izberi(ocene);
             break;
@@ -61,6 +57,8 @@ static string[,] izberi(string[,] ocene)
 
 static string[,] dodaj(string[,] ocene)
 {
+    izpis(ocene);
+
     Console.Write("\nPri katerem predmetu si želiš dodati oceno? ");
     string predmet = Console.ReadLine();
 
@@ -105,9 +103,9 @@ static string[,] uredi(string[,] ocene)
     if (ocene.GetLength(0) == 1) // če ima samo 1 vrstico nima ocen zato jih ne mores urejat
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("V tabeli ni zapisanih nobenih ocen, zato jih ne morete urejati.");
-        Console.ResetColor();
-        return ocene;
+        Console.WriteLine("\nV tabeli ni zapisanih nobenih ocen, zato jih ne moreš urejati!");
+        Console.ResetColor(); 
+        return izberi(ocene); // na novo dobiš izbiro funkcij
     }
 
     Console.Write("\nPri katerem predmetu si želiš urediti oceno? ");
