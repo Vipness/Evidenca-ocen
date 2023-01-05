@@ -32,14 +32,14 @@ while (!(ne.Contains(input)));
 static string[,] izberi(string[,] ocene)
 {
     Console.WriteLine("\nIzberi kaj želiš narediti:");
-    Console.WriteLine("1 - Dodaj oceno \n2 - Uredi oceno \n3 - Izbriši predmet \n4 - Izpiši ocene za določen predmet");
+    Console.WriteLine("0 - Dodaj predmet \n1 - Dodaj oceno \n2 - Uredi oceno \n3 - Izbriši predmet \n4 - Izpiši ocene za določen predmet");
 
     int st_izbire = int.Parse(Console.ReadLine());
 
     switch (st_izbire)
     {
-        // case 0: ocene = dodaj_predmet(ocene); break;
-        case 1: ocene = dodaj(ocene); break;
+        case 0: ocene = dodaj_predmet(ocene); break;
+        case 1: ocene = dodaj_oceno(ocene); break;
         case 2: ocene = uredi(ocene); break;
         case 3: ocene = izbrisi(ocene); break;
         case 4: izpisi_predmet(ocene); break;
@@ -54,7 +54,42 @@ static string[,] izberi(string[,] ocene)
     return ocene;
 }
 
-static string[,] dodaj(string[,] ocene)
+static string[,] dodaj_predmet(string[,] ocene)
+{
+    Console.Write("\nPrivzeti stolpec za dodajanje predmeta je zadnji. Ali bi to rad spremenil? ");
+    string[] ja = { "ja", "da", "y" };
+    string odgovor = Console.ReadLine();
+
+    int stolp_predmeta = ocene.GetLength(1)-1; // default stolpec je zadnji
+
+    if(ja.Contains(odgovor)) // če rečemo da, ga lahko spremenimo
+    {
+        Console.WriteLine("Na kateri stolpec si želiš uvrstiti nov predmet? ");
+        stolp_predmeta = int.Parse(Console.ReadLine())-1; // -1 ker se indexi zacnejo z 0
+    }
+
+    Console.Write("Vnesi ime novega predmeta: ");
+    string predmet = Console.ReadLine();
+
+    string[,] nova = new string[ocene.GetLength(0), ocene.GetLength(1) + 1];
+
+    for (int i = 0; i < ocene.GetLength(0); i++)
+        for (int j = 0; j < ocene.GetLength(1); j++)
+        {
+            if (j >= stolp_predmeta)
+                nova[i, j + 1] = ocene[i, j];
+
+            else
+                nova[i, j] = ocene[i, j];
+        }
+
+    nova[0, stolp_predmeta] = predmet;
+
+    return nova;
+}
+
+
+static string[,] dodaj_oceno(string[,] ocene)
 {
     izpis(ocene);
 
@@ -67,7 +102,7 @@ static string[,] dodaj(string[,] ocene)
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
         Console.ResetColor();
-        dodaj(ocene);
+        dodaj_oceno(ocene);
     }
 
     int vrsta = 0;
@@ -199,11 +234,10 @@ static string[,] povecaj(string[,] ocene)
 
 static int najdi_predmet(string[,] ocene, string predmet)
 {
-    for(int j = 1; j < ocene.GetLength(1); j++)
-    {
-        if (ocene[0, j] == predmet)
+    for (int j = 1; j < ocene.GetLength(1); j++)
+        if (ocene[0, j].ToLower() == predmet.ToLower())
             return j;
-    }
+
     return -1;
 }
 
