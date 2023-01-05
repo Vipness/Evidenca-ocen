@@ -113,18 +113,30 @@ static string[,] dodaj_predmet(string[,] ocene)
 
 static string[,] dodaj_oceno(string[,] ocene)
 {
-    izpis(ocene);
-
-    Console.Write("\nPri katerem predmetu si želiš dodati oceno? ");
-    string predmet = Console.ReadLine();
-
-    int stolp_predmeta = najdi_predmet(ocene, predmet);
-    if (stolp_predmeta == -1)
+    if(ocene.GetLength(1) == 1)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
+        Console.WriteLine("\nV tabeli ni predmetov, da bi jim lahko dodal oceno!");
         Console.ResetColor();
-        return dodaj_oceno(ocene);
+        return izberi(ocene);
+    }
+
+    izpis(ocene);
+    int stolp_predmeta = 1;
+
+    if(ocene.GetLength(1) > 2)
+    {
+        Console.Write("\nPri katerem predmetu si želiš dodati oceno? ");
+        string predmet = Console.ReadLine();
+
+        stolp_predmeta = najdi_predmet(ocene, predmet);
+        if (stolp_predmeta == -1)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
+            Console.ResetColor();
+            return dodaj_oceno(ocene);
+        }
     }
 
     int vrsta = 0;
@@ -191,6 +203,14 @@ static string[,] uredi(string[,] ocene)
 
 static string[,] izbrisi(string[,] ocene)
 {
+    if (ocene.GetLength(1) == 1)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("\nV tabeli ni predmetov, ki bi jih lahko izbrisal!");
+        Console.ResetColor();
+        return izberi(ocene);
+    }
+
     Console.Write("\nKateri predmet si želiš izbrisati? ");
     string predmet = Console.ReadLine();
 
@@ -220,6 +240,14 @@ static string[,] izbrisi(string[,] ocene)
 
 static string[,] izpisi_predmet(string[,] ocene)
 {
+    if (ocene.GetLength(1) == 1)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("\nV tabeli ni predmetov, ki bi jih lahko izpisal!");
+        Console.ResetColor();
+        return izberi(ocene);
+    }
+
     Console.Write("\nZa kater predmet bi rad izpisal ocene? ");
     string predmet = Console.ReadLine();
 
