@@ -45,7 +45,7 @@ static string[,] izberi(string[,] ocene)
         case 4: izpisi_predmet(ocene); break;
         default:
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nVnesena je bila napačna številka! Poskusi znova."); // izpiše z rdečo
+            Console.WriteLine("\nVnešena je bila napačna številka! Poskusi znova."); // izpiše z rdečo
             Console.ResetColor();
             ocene = izberi(ocene);
             break;
@@ -60,12 +60,12 @@ static string[,] dodaj_predmet(string[,] ocene)
     string[] ja = { "ja", "da", "y" };
     string odgovor = Console.ReadLine();
 
-    int stolp_predmeta = ocene.GetLength(1)-1; // default stolpec je zadnji
+    int stolp_predmeta = ocene.GetLength(1) - 1; // default stolpec je zadnji
 
-    if(ja.Contains(odgovor)) // če rečemo da, ga lahko spremenimo
+    if (ja.Contains(odgovor)) // če rečemo da, ga lahko spremenimo
     {
         Console.WriteLine("Na kateri stolpec si želiš uvrstiti nov predmet? ");
-        stolp_predmeta = int.Parse(Console.ReadLine())-1; // -1 ker se indexi zacnejo z 0
+        stolp_predmeta = int.Parse(Console.ReadLine()) - 1; // -1 ker se indexi zacnejo z 0
     }
 
     Console.Write("Vnesi ime novega predmeta: ");
@@ -102,7 +102,7 @@ static string[,] dodaj_oceno(string[,] ocene)
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
         Console.ResetColor();
-        dodaj_oceno(ocene);
+        return dodaj_oceno(ocene);
     }
 
     int vrsta = 0;
@@ -178,7 +178,7 @@ static string[,] izbrisi(string[,] ocene)
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
         Console.ResetColor();
-        izbrisi(ocene);
+        return izbrisi(ocene);
     }
 
     string[,] nova = new string[ocene.GetLength(0), ocene.GetLength(1) - 1];
@@ -196,7 +196,7 @@ static string[,] izbrisi(string[,] ocene)
     return nova;
 }
 
-static void izpisi_predmet(string[,] ocene)
+static string[,] izpisi_predmet(string[,] ocene)
 {
     Console.Write("\nZa kater predmet bi rad izpisal ocene? ");
     string predmet = Console.ReadLine();
@@ -207,7 +207,7 @@ static void izpisi_predmet(string[,] ocene)
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
         Console.ResetColor();
-        izberi(ocene);
+        return izberi(ocene);
     }
 
     string[,] novo = new string[ocene.GetLength(0), 2];
@@ -218,7 +218,8 @@ static void izpisi_predmet(string[,] ocene)
         novo[i, 1] = ocene[i, stolp_predmeta];
     }
 
-    izpis(novo);                  
+    izpis(novo);
+    return ocene;
 }
 
 static string[,] povecaj(string[,] ocene)
