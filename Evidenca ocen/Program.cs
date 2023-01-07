@@ -1,6 +1,6 @@
 ﻿using System.Text;
-Console.OutputEncoding = Encoding.UTF8; // izpis nastavil na utf-8, da se vidijo tudi šumniki
-Console.Title = "Evidenca ocen"; // spremenim ime konzole
+Console.OutputEncoding = Encoding.UTF8; // izpis na utf-8, da se vidijo tudi šumniki
+Console.Title = "Evidenca ocen"; // ime konzole
 
 Console.Write("Vnesi število predmetov, ki jih imaš v šoli: ");
 int st_pred = int.Parse(Console.ReadLine());
@@ -23,7 +23,7 @@ string staro = "";
 for (int i = 0; i < st_pred; i++)
 {
     Console.Write("Vnesi ime {0} predmeta: ", i + 1);
-    string predmet = Console.ReadLine(); // zamakni za 1 stolpec v desno
+    string predmet = Console.ReadLine(); 
 
     while (predmet.ToLower() == staro.ToLower())
     {
@@ -33,7 +33,7 @@ for (int i = 0; i < st_pred; i++)
 
         predmet = Console.ReadLine();
     }
-    ocene[0, i + 1] = predmet;
+    ocene[0, i + 1] = predmet; // zamakni za 1 stolpec v desno
     staro = predmet;
 }
 
@@ -96,14 +96,14 @@ static string[,] dodaj_predmet(string[,] ocene)
     {
         Console.Write("\nPrivzeti stolpec za dodajanje predmeta je zadnji. Ali bi to rad spremenil? ('y' za spremembo) ");
         string odgovor = Console.ReadLine();
-        int stolp_predmeta = ocene.GetLength(1); // default stolpec je zadnji in ker se vse pomakne za 1 naprej ne rabim dat -1
+        int stolp_predmeta = ocene.GetLength(1); // default stolpec je zadnji in ker se vse pomakne za 1 naprej ni potrebno dati -1
 
-        if (odgovor.ToLower() == "y") // če rečemo da, ga lahko spremenimo
+        if (odgovor.ToLower() == "y") 
         {
             izpis(ocene);
-
             Console.Write("\nNa kateri stolpec si želiš uvrstiti nov predmet? ");
-            stolp_predmeta = int.Parse(Console.ReadLine()) - 1; // -1 ker se indexi zacnejo z 0
+            stolp_predmeta = int.Parse(Console.ReadLine()) - 1; // -1 ker se indeksi zacnejo z 0
+
             while(stolp_predmeta < 0 || stolp_predmeta > ocene.GetLength(1))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -178,7 +178,7 @@ static string[,] dodaj_oceno(string[,] ocene)
     while (!(String.IsNullOrWhiteSpace(ocene[vrsta, stolp_predmeta])))
     {
         vrsta++;
-        if (vrsta >= ocene.GetLength(0)) // če je out of range
+        if (vrsta >= ocene.GetLength(0)) // če je out of range dodamo 1 vrstico tabeli
             ocene = povecaj(ocene);
     }
 
@@ -203,12 +203,12 @@ static string[,] dodaj_oceno(string[,] ocene)
 
 static string[,] uredi(string[,] ocene)
 {
-    if (ocene.GetLength(0) == 1) // če ima samo 1 vrstico nima ocen zato jih ne mores urejat
+    if (ocene.GetLength(0) == 1) // če ima tabela samo 1 vrstico nima ocen
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("\nV tabeli ni zapisanih nobenih ocen, zato jih ne moreš urejati!");
         Console.ResetColor(); 
-        return ocene; // na novo dobiš izbiro funkcij
+        return ocene;
     }
 
     izpis(ocene);
@@ -231,7 +231,7 @@ static string[,] uredi(string[,] ocene)
         }
     }
 
-    int vrsta = 1; // default vrsta je 1, če jih je več ga vpraša katera in spremeni vrednost
+    int vrsta = 1; // default vrsta je 1, če jih je več vprašamo katero bi rad spremenil
     if(ocene.GetLength(0) > 2)
     {
         Console.Write("Katero oceno po vrsti si želiš si urediti? ");
