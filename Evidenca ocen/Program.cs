@@ -150,24 +150,27 @@ static string[,] dodaj_oceno(string[,] ocene)
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("\nV tabeli ni predmetov, da bi jim lahko dodal oceno!");
         Console.ResetColor();
-        return izberi(ocene);
+        return ocene;
     }
 
     izpis(ocene);
     int stolp_predmeta = 1;
 
-    if(ocene.GetLength(1) > 2)
+    if (ocene.GetLength(1) > 2)
     {
         Console.Write("\nPri katerem predmetu si želiš dodati oceno? ");
         string predmet = Console.ReadLine();
 
         stolp_predmeta = najdi_predmet(ocene, predmet);
-        if (stolp_predmeta == -1)
+
+        while (stolp_predmeta == -1)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
+            Console.Write("\nPredmet ni bil najden! Vnesi ponovno: ");
             Console.ResetColor();
-            return dodaj_oceno(ocene);
+
+            predmet = Console.ReadLine();
+            stolp_predmeta = najdi_predmet(ocene, predmet);
         }
     }
 
@@ -205,27 +208,29 @@ static string[,] uredi(string[,] ocene)
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("\nV tabeli ni zapisanih nobenih ocen, zato jih ne moreš urejati!");
         Console.ResetColor(); 
-        return izberi(ocene); // na novo dobiš izbiro funkcij
+        return ocene; // na novo dobiš izbiro funkcij
     }
 
     izpis(ocene);
-    int stolp_predmeta = 1; // default stolpec ki ga urejamo je 1
+    int stolp_predmeta = 1;
 
-    if(ocene.GetLength(1) > 2) // če imamo samo 1 predmet ne rabimo vedeti katerega urejamo
+    if (ocene.GetLength(1) > 2)
     {
         Console.Write("\nPri katerem predmetu si želiš urediti oceno? ");
         string predmet = Console.ReadLine();
 
         stolp_predmeta = najdi_predmet(ocene, predmet);
-        if (stolp_predmeta == -1)
+        while (stolp_predmeta == -1)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
+            Console.Write("\nPredmet ni bil najden! Vnesi ponovno: ");
             Console.ResetColor();
-            return uredi(ocene);
+
+            predmet = Console.ReadLine();
+            stolp_predmeta = najdi_predmet(ocene, predmet);
         }
     }
-    
+
     int vrsta = 1; // default vrsta je 1, če jih je več ga vpraša katera in spremeni vrednost
     if(ocene.GetLength(0) > 2)
     {
@@ -264,19 +269,27 @@ static string[,] izbrisi(string[,] ocene)
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("\nV tabeli ni predmetov, ki bi jih lahko izbrisal!");
         Console.ResetColor();
-        return izberi(ocene);
+        return ocene;
     }
 
-    Console.Write("\nKateri predmet si želiš izbrisati? ");
-    string predmet = Console.ReadLine();
+    int stolp_predmeta = 1;
 
-    int stolp_predmeta = najdi_predmet(ocene, predmet);
-    if (stolp_predmeta == -1)
+    if (ocene.GetLength(1) > 2)
     {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
-        Console.ResetColor();
-        return izbrisi(ocene);
+        Console.Write("\nKateri predmet si želiš izbrisati? ");
+        string predmet = Console.ReadLine();
+
+        stolp_predmeta = najdi_predmet(ocene, predmet);
+
+        while (stolp_predmeta == -1)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("\nPredmet ni bil najden! Vnesi ponovno: ");
+            Console.ResetColor();
+
+            predmet = Console.ReadLine();
+            stolp_predmeta = najdi_predmet(ocene, predmet);
+        }
     }
 
     string[,] nova = new string[ocene.GetLength(0), ocene.GetLength(1) - 1];
@@ -301,21 +314,29 @@ static string[,] izpisi_predmet(string[,] ocene)
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("\nV tabeli ni predmetov, ki bi jih lahko izpisal!");
         Console.ResetColor();
-        return izberi(ocene);
+        return ocene;
     }
 
-    Console.Write("\nZa kater predmet bi rad izpisal ocene? ");
-    string predmet = Console.ReadLine();
+    int stolp_predmeta = 1;
 
-    int stolp_predmeta = najdi_predmet(ocene, predmet);
-    if (stolp_predmeta == -1)
+    if(ocene.GetLength(1) > 2)
     {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
-        Console.ResetColor();
-        return izberi(ocene);
-    }
+        Console.Write("\nZa kateri predmet bi rad izpisal ocene? ");
+        string predmet = Console.ReadLine();
 
+        stolp_predmeta = najdi_predmet(ocene, predmet);
+
+        while(stolp_predmeta == -1)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("\nPredmet ni bil najden! Vnesi ponovno: ");
+            Console.ResetColor();
+
+            predmet = Console.ReadLine();
+            stolp_predmeta = najdi_predmet(ocene, predmet);
+        }
+    }
+    
     string[,] novo = new string[ocene.GetLength(0), 2];
 
     for (int i = 0; i < ocene.GetLength(0); i++)
@@ -324,7 +345,9 @@ static string[,] izpisi_predmet(string[,] ocene)
         novo[i, 1] = ocene[i, stolp_predmeta];
     }
 
-    izpis(novo);
+    if(ocene.GetLength(1) > 2)
+        izpis(novo);
+
     return ocene;
 }
 
