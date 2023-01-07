@@ -5,20 +5,41 @@ Console.Title = "Evidenca ocen"; // spremenim ime konzole
 Console.Write("Vnesi število predmetov, ki jih imaš v šoli: ");
 int st_pred = int.Parse(Console.ReadLine());
 
-// 2d tabela
+while(st_pred < 0)
+{
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.Write("Vnešeno število predmetov je neveljavno! Poskusi znova: ");
+    Console.ResetColor();
+
+    st_pred = int.Parse(Console.ReadLine());
+}
+
 string[,] ocene = new string[1, st_pred + 1];
 ocene[0, 0] = "Ocene";
 
+string staro = "";
+
 // imena predmetov
-for (int i = 0; i < st_pred; i++){
+for (int i = 0; i < st_pred; i++)
+{
     Console.Write("Vnesi ime {0} predmeta: ", i + 1);
-    ocene[0, i + 1] = Console.ReadLine();
+    string predmet = Console.ReadLine(); // zamakni za 1 stolpec v desno
+
+    while (predmet.ToLower() == staro.ToLower())
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("\nPredmet že obstaja! Ponovno vnesi ime novega predmeta: ");
+        Console.ResetColor();
+
+        predmet = Console.ReadLine();
+    }
+    ocene[0, i + 1] = predmet;
+    staro = predmet;
 }
 
 izpis(ocene);
 
 string input = "ja";
-
 do
 {
     ocene = izberi(ocene);
@@ -44,7 +65,7 @@ static string[,] izberi(string[,] ocene)
         case 4: izpisi_predmet(ocene); break;
         default:
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nVnešena je bila napačna številka! Poskusi znova."); // izpiše z rdečo
+            Console.WriteLine("\nVnešena je bila napačna številka! Poskusi znova.");
             Console.ResetColor();
             ocene = izberi(ocene);
             break;
@@ -57,7 +78,7 @@ static string[,] dodaj_predmet(string[,] ocene)
 {
     if(ocene.GetLength(1) == 1)
     {
-        Console.Write("Vnesi ime novega predmeta: ");
+        Console.Write("\nVnesi ime novega predmeta: ");
         string predmet = Console.ReadLine();
 
         string[,] nova = new string[ocene.GetLength(0), ocene.GetLength(1) + 1];
@@ -80,6 +101,7 @@ static string[,] dodaj_predmet(string[,] ocene)
         if (odgovor.ToLower() == "y") // če rečemo da, ga lahko spremenimo
         {
             izpis(ocene);
+
             Console.Write("\nNa kateri stolpec si želiš uvrstiti nov predmet? ");
             stolp_predmeta = int.Parse(Console.ReadLine()) - 1; // -1 ker se indexi zacnejo z 0
             while(stolp_predmeta < 0 || stolp_predmeta > ocene.GetLength(1))
@@ -91,8 +113,6 @@ static string[,] dodaj_predmet(string[,] ocene)
             }
         }
 
-        Console.Write("Vnesi ime novega predmeta: ");
-        string predmet = Console.ReadLine();
         string[,] nova = new string[ocene.GetLength(0), ocene.GetLength(1) + 1];
 
         for (int i = 0; i < ocene.GetLength(0); i++)
@@ -104,6 +124,18 @@ static string[,] dodaj_predmet(string[,] ocene)
                 else
                     nova[i, j] = ocene[i, j];
             }
+
+        Console.Write("Vnesi ime novega predmeta: ");
+        string predmet = Console.ReadLine();
+
+        while (najdi_predmet(ocene, predmet) != -1) // če ni -1 je najdel predmet, ki ima isto ime
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("\nPredmet že obstaja! Ponovno vnesi ime novega predmeta: ");
+            Console.ResetColor();
+
+            predmet = Console.ReadLine();
+        }
 
         nova[0, stolp_predmeta] = predmet;
         
@@ -150,17 +182,17 @@ static string[,] dodaj_oceno(string[,] ocene)
     Console.Write("Vnesi pridobljeno oceno: ");
     string ocena = Console.ReadLine();
 
-    while (int.Parse(ocena) < 0 || int.Parse(ocena) > 5)
+    while (int.Parse(ocena) < 1 || int.Parse(ocena) > 5)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write("Vnešena ocena je neveljavna! Vnesi ponovno: ");
+        Console.Write("\nVnešena ocena je neveljavna! Vnesi ponovno: ");
         Console.ResetColor();
         ocena = Console.ReadLine();
     }
 
     ocene[vrsta, stolp_predmeta] = ocena;
 
-    for (int i = 1; i < ocene.GetLength(0); i++)
+    for (int i = 1; i < ocene.GetLength(0); i++) // v vsako vrstico po prvi na 1 stolpec dodamo št ocene
         ocene[i, 0] = Convert.ToString(i);
 
     return ocene;
@@ -176,27 +208,51 @@ static string[,] uredi(string[,] ocene)
         return izberi(ocene); // na novo dobiš izbiro funkcij
     }
 
-    Console.Write("\nPri katerem predmetu si želiš urediti oceno? ");
-    string predmet = Console.ReadLine();
+    izpis(ocene);
+    int stolp_predmeta = 1; // default stolpec ki ga urejamo je 1
 
-    int stolp_predmeta = najdi_predmet(ocene, predmet);
-    if (stolp_predmeta == -1)
+    if(ocene.GetLength(1) > 2) // če imamo samo 1 predmet ne rabimo vedeti katerega urejamo
     {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
-        Console.ResetColor();
-        uredi(ocene);
-    }
+        Console.Write("\nPri katerem predmetu si želiš urediti oceno? ");
+        string predmet = Console.ReadLine();
 
+        stolp_predmeta = najdi_predmet(ocene, predmet);
+        if (stolp_predmeta == -1)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Predmet ni bil najden! Poskusi znova.");
+            Console.ResetColor();
+            return uredi(ocene);
+        }
+    }
+    
     int vrsta = 1; // default vrsta je 1, če jih je več ga vpraša katera in spremeni vrednost
     if(ocene.GetLength(0) > 2)
     {
         Console.Write("Katero oceno po vrsti si želiš si urediti? ");
         vrsta = int.Parse(Console.ReadLine());
+
+        while(vrsta < 1 || vrsta >= ocene.GetLength(0))
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("\nVnešeno število vrstice je neveljavno! Poskusi ponovno: ");
+            Console.ResetColor();
+
+            vrsta = int.Parse(Console.ReadLine());
+        }
     }
 
     Console.Write("Vnesi novo oceno: ");
-    ocene[vrsta, stolp_predmeta] = Console.ReadLine();
+    string ocena = Console.ReadLine();
+    while (int.Parse(ocena) < 1 || int.Parse(ocena) > 5)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("\nVnešena ocena je neveljavna! Vnesi ponovno: ");
+        Console.ResetColor();
+        ocena = Console.ReadLine();
+    }
+
+    ocene[vrsta, stolp_predmeta] = ocena;
 
     return ocene;
 }
