@@ -17,14 +17,15 @@ while(st_pred < 0)
 string[,] ocene = new string[1, st_pred + 1];
 ocene[0, 0] = "Ocene";
 
-string staro = "";
+string[] t_predmeti = new string[st_pred];
+
 // imena predmetov
 for (int i = 0; i < st_pred; i++)
 {
     Console.Write("Vnesi ime {0} predmeta: ", i + 1);
     string predmet = Console.ReadLine(); 
 
-    while (predmet.ToLower() == staro.ToLower())
+    while (t_predmeti.Contains(predmet.ToLower()))
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.Write("\nPredmet že obstaja! Ponovno vnesi ime novega predmeta: ");
@@ -33,7 +34,7 @@ for (int i = 0; i < st_pred; i++)
         predmet = Console.ReadLine();
     }
     ocene[0, i + 1] = predmet; // zamakni za 1 stolpec v desno
-    staro = predmet;
+    t_predmeti[i] = predmet.ToLower();
 }
 
 izpis(ocene);
